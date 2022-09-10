@@ -34,8 +34,10 @@ REPORING_MONTH = 12
 #-----------------------------------------------------------------------------
 def update():
     load()
-    load_transactions()
-    update_report()
+    transform_events()
+    create_report_tables()
+    post_to_gsheet()
+    print('report updated!')
 
 
 #-----------------------------------------------------------------------------
@@ -58,7 +60,7 @@ def update_config():
 #-----------------------------------------------------------------------------
 #subfunctions
 #-----------------------------------------------------------------------------
-def load_transactions():
+def transform_events():
     global TABLES
     events = pd.read_csv(CSV_FILENAME, encoding='iso-8859-1')
     subfields = ['Start',
@@ -77,25 +79,55 @@ def load_transactions():
 
     events = events[events['year'] == REPORING_YEAR].copy()
     events = events[events['month'] <= REPORING_MONTH].copy()
-    events_pvt = pd.pivot_table(events, index='Event Type', columns='month',
+
+    #fill blank categories
+    events['Event Type'].fillna('', inplace=True)
+    events['Event Object'].fillna('', inplace=True)
+
+    #trim
+    events['Event Type'] = events['Event Type'].apply(lambda x: x.strip())
+    events['Event Object'] = events['Event Object'].apply(lambda x: x.strip())
+
+    TABLES['events'] = events
+
+
+def create_report_tables():
+    #01 main category report
+    events = TABLES['events']
+    main_cat_pvt = pd.pivot_table(events, index='Event Type', columns='month',
                              values='duration_hrs', aggfunc='sum')
-    events_pvt.fillna(0, inplace=True)
-    events_pvt = events_pvt/events_pvt.sum()*24
-    TABLES['main_category_report'] = events_pvt
+    main_cat_pvt.fillna(0, inplace=True)
+    #events_pvt = events_pvt/events_pvt.sum()*24
+    TABLES['main_category_report'] = main_cat_pvt
+
+    #02 subcategory report
+    sub_cat_pvt = pd.pivot_table(events, index=['Event Type', 'Event Object'], columns='month',
+                             values='duration_hrs', aggfunc='sum')
+    sub_cat_pvt.fillna(0, inplace=True)
+    sub_cat_pvt = sub_cat_pvt/sub_cat_pvt.sum()*24
+    TABLES['subcategory_report'] = sub_cat_pvt
 
 
-def update_report():
+def post_to_gsheet():
+    #01 main category
     main_category_report = TABLES['main_category_report']
-
     #data fields
     db.post_to_gsheet(main_category_report, 'hours', 'main_category_report',
                       input_option='USER_ENTERED')
-
     #category field
     db.post_to_gsheet(main_category_report.reset_index()[['Event Type']],
                       'hours', 'main_categories',
                       input_option='USER_ENTERED')
 
+    #02 subcategories
+    subcategory_report = TABLES['subcategory_report']
+    #data fields
+    db.post_to_gsheet(subcategory_report, 'hours', 'subcategory_report',
+                      input_option='USER_ENTERED')
+    #category field
+    db.post_to_gsheet(subcategory_report.reset_index()[['Event Type', 'Event Object']],
+                      'hours', 'subcategories',
+                      input_option='USER_ENTERED')
 
 # -----------------------------------------------------
 # Command line interface
