@@ -1,0 +1,60 @@
+{
+  "hours": {
+    "wkbid": "1Pya5ZM4JDz0iPTggdzllPizqjzqAvv7uam11e0P-2is",
+    "sheets": {
+      "config": {
+        "data": "config!A2:C",
+        "header": "config!A1:C1"
+      },
+      "main_category_report": {
+        "data": "main_category_report_data",
+        "header": "main_category_report_header",
+        "data_types": {
+          "1": "float",
+          "2": "float",
+          "3": "float",
+          "4": "float",
+          "5": "float",
+          "6": "float",
+          "7": "float",
+          "8": "float",
+          "9": "float",
+          "10": "float",
+          "11": "float",
+          "12": "float"
+        }
+      },
+      "main_categories": {
+        "data": "main_category_report_category",
+        "data_types": {
+          "category": "str"
+        }
+      },
+      "subcategory_report": {
+        "data": "subcategory_report_data",
+        "header": "subcategory_report_header",
+        "data_types": {
+          "1": "float",
+          "2": "float",
+          "3": "float",
+          "4": "float",
+          "5": "float",
+          "6": "float",
+          "7": "float",
+          "8": "float",
+          "9": "float",
+          "10": "float",
+          "11": "float",
+          "12": "float"
+        }
+      },
+      "subcategories": {
+        "data": "subcategory_report_category",
+        "data_types": {
+          "category": "str",
+          "subcategory": "str"
+        }
+      }
+    }
+  }
+}
