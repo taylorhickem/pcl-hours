@@ -33,12 +33,12 @@ REPORTING_MONTH = 12
 #-----------------------------------------------------------------------------
 #main
 #-----------------------------------------------------------------------------
-def update():
+def update(events=None):
     """ this function updates the gsheet report with new blockytime events
     :return: None
     """
     load()
-    transform_events()
+    transform_events(events)
     update_db()
 
     create_report_tables()
@@ -125,9 +125,10 @@ def remove_db_events(new_events):
 #-----------------------------------------------------------------------------
 #subfunctions
 #-----------------------------------------------------------------------------
-def transform_events():
+def transform_events(events=None):
     global TABLES
-    events = pd.read_csv(CSV_FILENAME, encoding='iso-8859-1')
+    if events is None:
+        events = pd.read_csv(CSV_FILENAME, encoding='iso-8859-1')
     subfields = ['Start',
                  'Duration',
                  'Event Type',
