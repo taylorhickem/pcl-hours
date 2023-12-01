@@ -1,0 +1,27 @@
+{
+  "tables": {
+    "event": {
+      "last_modified": "last_modified",
+      "key": "Start",
+      "partition_key": "Start",
+      "sort_key": "",
+      "columns": {
+        "Start": "str",
+        "Duration": "int",
+        "Status": "str",
+        "Comment": "str",
+        "Event Object": "str",
+        "Class of Type": "str",
+        "Event Type": "str",
+        "Kind of Object": "str",
+        "Tag": "int",
+        "start_date": "str",
+        "duration_hrs": "decimal(3)",
+        "year": "int",
+        "month": "int",
+        "day": "int",
+        "last_modified": "str"
+      }
+    }
+  }
+}
