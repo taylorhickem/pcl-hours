@@ -7,7 +7,7 @@ import boto3
 import events as bt
 
 S3_BUCKET = 'pcl-hours'
-EVENT_DATA_KEY = 'event_data/events.csv'
+EVENT_DATA_KEY = 'cicd_test/events.csv'
 EVENT_DATA_FILE = '/opt/events.csv'
 USER_DATA_DIR = '/opt'
 USER_DATA = {
@@ -34,9 +34,9 @@ def lambda_handler(event, context):
     print(f'\n ACTION_TYPE {ACTION_TYPE} \n')
     messages.append(f'\n ACTION_TYPE {ACTION_TYPE} \n')
     if ACTION_TYPE == 'events_delete':
-        DELETE_DATE = event['DELETE_DATE']
+        event_delete_date = event['DELETE_DATE']
         messages.append('deleting events ...')
-        events_delete(DELETE_DATE, messages)
+        events_delete(event_delete_date, messages)
 
     elif ACTION_TYPE == 'report_update':
         report_update()

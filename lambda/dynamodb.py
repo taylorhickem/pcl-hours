@@ -12,6 +12,7 @@ import pandas as pd
 from boto3.dynamodb.conditions import Key, Attr
 import boto3
 
+
 DEFAULT_BATCH_MAX = 100
 DIRECT_MAP = ['str']
 REF_DATE = dt.datetime(1900, 1, 1)
@@ -62,7 +63,7 @@ class DynamoDBTable(object):
         if len(df) > 0:
             row_count = len(df)
             columns = df.to_dict(orient='series')
-            for c in df.columns:
+            for c in self.columns:
                 columns[c] = dynamodb_format(self.schema[c], columns[c])
             items = [dict(zip(self.columns, [columns[c][i] for c in self.columns]))
                      for i in range(row_count)]
@@ -81,7 +82,7 @@ class DynamoDBTable(object):
             items should already be in standard format.
         """
         if len(items) > 0:
-            # try:
+            #try:
             with self.table.batch_writer() as batch:
                 for item in items:
                     try:
@@ -89,7 +90,7 @@ class DynamoDBTable(object):
                     except Exception as e:
                         print(f'item: {item}')
                         raise e
-            # except Exception as e:
+            #except Exception as e:
             #    self._on_error(str(e))
 
     def rows_insert(self, rows: pd.DataFrame):
@@ -98,17 +99,17 @@ class DynamoDBTable(object):
         items = self.as_items(rows)
         self._items_insert(items)
 
-    def query_by_string_value_eq(self, column_name, str_value: str, is_key=True, batch_max=None):
+    def query_by_string_value_eq(self, column_name, str_value:str, is_key=True, batch_max=None):
         if is_key:
             return self.query_by_key_string_value_eq(column_name, str_value, batch_max=batch_max)
         else:
             return self.query_by_attr_string_value_eq(column_name, str_value, batch_max=batch_max)
 
-    def query_by_key_string_value_eq(self, column_name, str_value: str, batch_max=None):
+    def query_by_key_string_value_eq(self, column_name, str_value:str, batch_max=None):
         key_condition = Key(column_name).eq(str_value)
         return self._query(key_condition=key_condition, batch_max=batch_max)
 
-    def query_by_attr_string_value_eq(self, column_name, str_value: str, batch_max=None):
+    def query_by_attr_string_value_eq(self, column_name, str_value:str, batch_max=None):
         filter_exp = Attr(column_name).eq(str_value)
         return self._scan(filter_expression=filter_exp, batch_max=batch_max)
 
@@ -452,13 +453,13 @@ def pandas_format(column_spec: str, df_series: pd.Series) -> pd.Series:
             if data_type in DATETIME_FORMATS:
                 if format_spec == '':
                     format_spec = DATETIME_FORMATS[data_type]
-                if data_type == 'time':  # -> dt.time
+                if data_type == 'time': # -> dt.time
                     formatted = formatted.apply(
                         lambda x: dt.datetime.strptime(x, format_spec).time())
-                elif data_type == 'date':  # -> dt.date
+                elif data_type == 'date': # -> dt.date
                     formatted = formatted.apply(
                         lambda x: dt.datetime.strptime(x, format_spec).date())
-                else:  # -> dt.datetime
+                else: # -> dt.datetime
                     formatted = formatted.apply(lambda x: dt.datetime.strptime(x, format_spec))
 
             elif data_type == 'decimal':
@@ -500,7 +501,7 @@ def dynamodb_format_value(column_spec: str, raw):
     return formatted
 
 
-def extract_parenthesis(test_str: str):
+def extract_parenthesis(test_str:str):
     inner = ''
     regex_outer = r'(.*?)\((.*?)\)?'
     regex_inner = r'\(.*?\)'
