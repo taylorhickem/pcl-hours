@@ -1,4 +1,5 @@
 {
+    "StackName": "lambda-blockytime-events-update",
     "AccountId": "",
     "StagingBucket": "pcl-blockytime",
     "DataPrefix": "events",
