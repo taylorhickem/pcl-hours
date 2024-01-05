@@ -5,7 +5,7 @@ Parameters:
   AccountId:
     Type: String
     Description: AWS Account ID
-  BlockytimeBucket:
+  StagingBucket:
     Type: String
     Description: S3 bucket for blockytime data
   DataPrefix:
@@ -31,7 +31,7 @@ Resources:
   DataBucket:
     Type: AWS::S3::Bucket
     Properties:
-      BucketName: !Ref BlockytimeBucket
+      BucketName: !Ref StagingBucket
 
   EventsUpdateLambda:
     Type: AWS::Serverless::Function
@@ -42,12 +42,12 @@ Resources:
         Bucket: !Ref SourceBucket
         Key: !Ref SourceKey
       Handler: lambda_function.lambda_handler
-      Runtime: python3.9  # Adjust as needed
+      Runtime: python3.9
       MemorySize: 512
       Timeout: 300
       Environment:
         Variables:
-          S3_BUCKET: !Ref BlockytimeBucket
+          S3_BUCKET: !Ref StagingBucket
       Layers:
         - 'arn:aws:lambda:ap-southeast-1:336392948345:layer:AWSSDKPandas-Python39:12'
         - !Sub 
@@ -60,7 +60,7 @@ Resources:
             account_id: !Ref AccountId
       Policies:
         - S3CrudPolicy:
-            BucketName: !Ref BlockytimeBucket
+            BucketName: !Ref StagingBucket
         - DynamoDBCrudPolicy:
             TableName: !Ref DynamoDBTableName
       Tags:

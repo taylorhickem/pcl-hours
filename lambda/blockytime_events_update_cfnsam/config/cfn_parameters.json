@@ -1,6 +1,6 @@
 {
     "AccountId": "",
-    "BlockytimeBucket": "pcl-blockytime",
+    "StagingBucket": "pcl-blockytime",
     "DataPrefix": "events",
     "DynamoDBTableName": "event",
     "LayerVersionSqlgsheet": 7,

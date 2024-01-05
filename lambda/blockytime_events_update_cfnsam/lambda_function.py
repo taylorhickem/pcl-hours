@@ -8,7 +8,7 @@ import events as bt
 
 #hello world
 
-S3_BUCKET = 'pcl-blockytime'
+S3_BUCKET = ''
 EVENT_DATA_KEY = 'events/events.csv'
 EVENT_DATA_FILE = '/opt/events.csv'
 USER_DATA_DIR = '/opt'
@@ -24,12 +24,12 @@ s3_client = None
 
 
 def lambda_handler(event, context):
-    global ACTION_TYPE
+    global S3_BUCKET, ACTION_TYPE
     status_code = 500
     message = 'failed'
 
     messages = []
-
+    S3_BUCKET = event['S3_BUCKET']
     if 'ACTION_TYPE' in event:
         ACTION_TYPE = event['ACTION_TYPE']
 
@@ -65,7 +65,6 @@ def report_update():
         f.close()
 
     print('loading events from S3 ...')
-    # s3_events  = events_from_file()
     s3_events = events_from_s3()
 
     print('loading DynamoDBAPI to sqlgsheet database.py ...')
