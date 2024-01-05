@@ -1,3 +1,4 @@
+import os
 import json
 import pandas as pd
 from sqlgsheet import database as db
@@ -29,7 +30,7 @@ def lambda_handler(event, context):
     message = 'failed'
 
     messages = []
-    S3_BUCKET = event['S3_BUCKET']
+    S3_BUCKET = os.environ['S3_BUCKET']
     if 'ACTION_TYPE' in event:
         ACTION_TYPE = event['ACTION_TYPE']
 
