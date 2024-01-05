@@ -6,8 +6,10 @@ import dynamodb
 import boto3
 import events as bt
 
-S3_BUCKET = 'pcl-hours'
-EVENT_DATA_KEY = 'cicd_test/events.csv'
+#hello world
+
+S3_BUCKET = 'pcl-blockytime'
+EVENT_DATA_KEY = 'events/events.csv'
 EVENT_DATA_FILE = '/opt/events.csv'
 USER_DATA_DIR = '/opt'
 USER_DATA = {
