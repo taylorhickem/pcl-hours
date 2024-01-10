@@ -4,8 +4,7 @@
     "StagingBucket": "pcl-blockytime",
     "DataPrefix": "events",
     "DynamoDBTableName": "event",
-    "LayerVersionSqlgsheet": 7,
-    "LayerVersionUserdata": 4,
+    "LayerArns": [],
     "SourceBucket": "source-code-001",
     "SourceKey": "deploy_package/lambda/blockytime-events-update-cfnsam.zip"
 }
