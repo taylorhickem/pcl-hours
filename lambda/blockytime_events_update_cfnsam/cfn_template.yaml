@@ -14,12 +14,9 @@ Parameters:
   DynamoDBTableName:
     Type: String
     Description: DynamoDB table to store event data
-  LayerVersionSqlgsheet:
+  LayerArns:
     Type: String
-    Description: Layer version for the sqlgsheet package
-  LayerVersionUserdata:
-    Type: String
-    Description: Layer version for the user data
+    Description: List of Layer Arns as comma seperated strings used by the lambda function
   SourceBucket:
     Type: String
     Description: S3 bucket containing the source code
@@ -48,16 +45,7 @@ Resources:
       Environment:
         Variables:
           S3_BUCKET: !Ref StagingBucket
-      Layers:
-        - 'arn:aws:lambda:ap-southeast-1:336392948345:layer:AWSSDKPandas-Python39:12'
-        - !Sub 
-          - 'arn:aws:lambda:ap-southeast-1:${account_id}:layer:sqlgsheet:${version_sqlgsheet}'
-          - version_sqlgsheet: !Ref LayerVersionSqlgsheet
-            account_id: !Ref AccountId
-        - !Sub 
-          - 'arn:aws:lambda:ap-southeast-1:${account_id}:layer:pcl-hours-user-data:${version_userdata}'
-          - version_userdata: !Ref LayerVersionUserdata
-            account_id: !Ref AccountId
+      Layers: !Split [",", !Ref LayerArns]
       Policies:
         - S3CrudPolicy:
             BucketName: !Ref StagingBucket
