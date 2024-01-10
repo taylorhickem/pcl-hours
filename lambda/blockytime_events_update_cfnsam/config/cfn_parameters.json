@@ -1,0 +1,10 @@
+{
+    "StackName": "lambda-blockytime-events-update",
+    "AccountId": "",
+    "StagingBucket": "pcl-blockytime",
+    "DataPrefix": "events",
+    "DynamoDBTableName": "event",
+    "LayerArns": [],
+    "SourceBucket": "source-code-001",
+    "SourceKey": "deploy_package/lambda/blockytime-events-update-cfnsam.zip"
+}

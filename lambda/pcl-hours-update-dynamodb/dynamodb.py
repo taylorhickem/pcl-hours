@@ -1,4 +1,4 @@
-"""
+""" 
 this module provides template classes that conform to the interface patterns
 
 """
@@ -98,7 +98,7 @@ class DynamoDBTable(object):
         """
         items = self.as_items(rows)
         self._items_insert(items)
-
+        
     def query_by_string_value_eq(self, column_name, str_value:str, is_key=True, batch_max=None):
         if is_key:
             return self.query_by_key_string_value_eq(column_name, str_value, batch_max=batch_max)
@@ -160,7 +160,7 @@ class DynamoDBTable(object):
                 start_key = response['LastEvaluatedKey']
         print(f'scan completed in {batch} batches out of max {batch_max}')
         return keys, items
-
+        
     def _query(self, key_condition, filter_expression=None, batch_max=None) -> Tuple[list, list]:
         items = []
         keys = []
@@ -340,7 +340,7 @@ class DynamoDBAPI(object):
             self._create_tables()
             self._connected = True
             print(f'DynamoDBAPI.connect success. tables {self.tables}')
-
+ 
     def disconnect(self):
         self._unload_tables()
         self.client = None
@@ -464,7 +464,7 @@ def pandas_format(column_spec: str, df_series: pd.Series) -> pd.Series:
 
             elif data_type == 'decimal':
                 formatted = formatted.apply(lambda x: float(x) if x is not None else x)
-
+                    
             elif data_type == 'int':
                 formatted = formatted.apply(lambda x: int(x) if x is not None else x)
 
@@ -494,10 +494,10 @@ def dynamodb_format_value(column_spec: str, raw):
                 formatted = round(formatted, int(format_spec))
             formatted_str = str(formatted)
             formatted = Decimal(formatted_str)
-
+        
         elif data_type == 'int':
             formatted = Decimal(int(formatted))
-
+            
     return formatted
 
 
