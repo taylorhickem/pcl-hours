@@ -16,8 +16,8 @@ phases:
   build:
     commands:
       - echo 03 build phase started
-      - source upload_to_s3.sh
-      - source deploy.sh
+      - ./upload_to_s3.sh
+      - ./deploy.sh
       - echo build phase complete.
   post_build:
     commands:
