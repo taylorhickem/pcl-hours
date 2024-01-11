@@ -12,16 +12,12 @@ phases:
       - python --version
       - aws --version aws-cli
       - git --version
+      - env
       - find . -type d
       - echo pre_build phase complete.
   build:
     commands:
       - echo 03 build phase started
-      - echo $CODEBUILD_WEBHOOK_PREV_COMMIT
-      - echo $CODEBUILD_RESOLVED_SOURCE_VERSION
-      - ls .git/HEAD
-      - ls .git/refs/heads
-      - git diff --name-only $CODEBUILD_RESOLVED_SOURCE_VERSION
       - source ./upload_to_s3.sh
       - source ./deploy.sh
       - echo build phase complete.
