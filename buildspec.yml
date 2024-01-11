@@ -11,11 +11,13 @@ phases:
       - echo 02 pre_build phase started
       - python --version
       - aws --version aws-cli
+      - git --version
       - find . -type d
       - echo pre_build phase complete.
   build:
     commands:
       - echo 03 build phase started
+      - git diff --name-status $CODEBUILD_WEBHOOK_BASE_REF
       - source ./upload_to_s3.sh
       - source ./deploy.sh
       - echo build phase complete.
