@@ -12,11 +12,11 @@ echo $cfn_template_full_path
 
 mkdir remote_files
 cd remote_files
-echo downloading from s3://$S3_BUCKET/git/layers_full_path
-aws s3 cp s3://$S3_BUCKET/git/layers_full_path layers.json
+echo downloading from s3://$S3_BUCKET/git/$layers_full_path
+aws s3 cp s3://$S3_BUCKET/git/$layers_full_path layers.json
 
-echo downloading from s3://$S3_BUCKET/git/cfn_template_full_path
-aws s3 cp s3://$S3_BUCKET/git/cfn_template_full_path cfn_template.yaml
+echo downloading from s3://$S3_BUCKET/git/$cfn_template_full_path
+aws s3 cp s3://$S3_BUCKET/git/$cfn_template_full_path cfn_template.yaml
 
 ls
 
