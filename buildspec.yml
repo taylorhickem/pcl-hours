@@ -19,6 +19,6 @@ phases:
       - /bin/bash export_to_s3.sh
       - /bin/bash deploy.sh
       - echo build phase complete.
-  artifacts:
-    files:
-      - "git/**/*"
+artifacts:
+  files:
+    - "git/**/*"
