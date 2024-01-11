@@ -10,7 +10,7 @@ phases:
     commands:
       - echo 02 pre_build phase started
       - python --version
-      - aws version
+      - aws --version aws-cli
       - find . -type d
       - echo pre_build phase complete.
   build:
