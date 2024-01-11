@@ -10,13 +10,13 @@ phases:
     commands:
       - echo 02 pre_build phase started
       - python --version
-      - aws help
-      - ls -al
+      - aws version
+      - find . -type d
       - echo pre_build phase complete.
   build:
     commands:
       - echo 03 build phase started
-      - /bin/bash export_to_s3.sh
+      - /bin/bash upload_to_s3.sh
       - /bin/bash deploy.sh
       - echo build phase complete.
 artifacts:
