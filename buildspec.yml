@@ -12,6 +12,8 @@ phases:
       - python --version
       - aws --version aws-cli
       - find . -type d
+      - chmod -x ./upload_to_s3.sh
+      - chmod -x ./deploy.sh
       - echo pre_build phase complete.
   build:
     commands:
