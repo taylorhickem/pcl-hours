@@ -13,7 +13,7 @@ phases:
       - aws --version aws-cli
       - git --version
       - env
-      - find . -type d
+      - ls -LR
       - echo pre_build phase complete.
   build:
     commands:
