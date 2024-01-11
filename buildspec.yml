@@ -27,4 +27,4 @@ phases:
       - echo build all phases complete.
 artifacts:
   files:
-    - "**/*"
+    - "lambda/**/*"
