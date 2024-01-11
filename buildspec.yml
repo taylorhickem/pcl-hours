@@ -19,7 +19,8 @@ phases:
       - echo 03 build phase started
       - echo $CODEBUILD_WEBHOOK_PREV_COMMIT
       - echo $CODEBUILD_RESOLVED_SOURCE_VERSION
-      - git diff --name-only $CODEBUILD_WEBHOOK_PREV_COMMIT
+      - ls .git/HEAD
+      - ls .git/refs/heads
       - git diff --name-only $CODEBUILD_RESOLVED_SOURCE_VERSION
       - source ./upload_to_s3.sh
       - source ./deploy.sh
