@@ -18,6 +18,7 @@ phases:
     commands:
       - echo 03 build phase started
       - git diff --name-status $CODEBUILD_WEBHOOK_BASE_REF
+      - echo $CODEBUILD_WEBHOOK_BASE_REF
       - source ./upload_to_s3.sh
       - source ./deploy.sh
       - echo build phase complete.
