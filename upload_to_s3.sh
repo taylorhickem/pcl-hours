@@ -10,7 +10,10 @@ echo CFN_TEMPLATE_PATH $CFN_TEMPLATE_PATH
 
 mkdir remote_files
 
+echo checking for changes in layers.json ...
 file_compare layers_update $LAYERS_PATH layers.json
+
+echo checking for changes in cfn_template.yaml ...
 file_compare stack_update $CFN_TEMPLATE_PATH cfn_template.yaml
 
 rm -r remote_files
