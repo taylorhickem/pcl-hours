@@ -6,8 +6,10 @@ files_compare () {
   if [ $? == 0 ] then
     if [ "$(cat $2)" != "$(cat $remote_dir/$3)" ] then
       ACTION_TYPES=$ACTION_TYPES,$1
+    fi
   else
     echo $3 not found at $endpoint
+  fi
 }
 
 echo upload to S3 script started
@@ -30,4 +32,3 @@ rm -r remote_files
 
 ACTION_TYPES=[$ACTION_TYPES]
 echo ACTION_TYPES $ACTION_TYPES
-
