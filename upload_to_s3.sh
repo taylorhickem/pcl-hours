@@ -1,28 +1,34 @@
 #!/bin/bash
 
-# hello
+files_compare () {
+  endpoint=s3://$S3_BUCKET/git/$GIT_REPO/$2
+  aws s3 cp $endpoint $remote_dir/$3
+  if [ $? == 0 ]; then
+    if [ "$(cat $2)" != "$(cat $remote_dir/$3)" ]; then
+      ACTION_TYPES=$ACTION_TYPES,$1
+    fi
+  else
+    echo $3 not found at $endpoint
+  fi
+}
 
 echo upload to S3 script started
-GIT_REPO=${PWD##*/} 
-echo $GIT_REPO
-layers_full_path=$GIT_REPO/$LAYERS_PATH
-echo $layers_full_path
-cfn_template_full_path=$GIT_REPO/$CFN_TEMPLATE_PATH
-echo $cfn_template_full_path
+remote_dir=remote
+GIT_REPO=${PWD##*/}
+ACTION_TYPES=function_update
+echo GIT_REPO $GIT_REPO
+echo LAYERS_PATH $LAYERS_PATH
+echo CFN_TEMPLATE_PATH $CFN_TEMPLATE_PATH
 
 mkdir remote_files
-cd remote_files
 
-#echo listing files in s3://$S3_BUCKET/git
-#aws s3 ls s3://$S3_BUCKET/git --recursive
+echo checking for changes in layers.json ...
+files_compare layers_update $LAYERS_PATH layers.json
 
-echo downloading from s3://$S3_BUCKET/git/$layers_full_path
-aws s3 cp s3://$S3_BUCKET/git/$layers_full_path layers.json
+echo checking for changes in cfn_template.yaml ...
+files_compare stack_update $CFN_TEMPLATE_PATH cfn_template.yaml
 
-echo downloading from s3://$S3_BUCKET/git/$cfn_template_full_path
-aws s3 cp s3://$S3_BUCKET/git/$cfn_template_full_path cfn_template.yaml
-
-ls
-
-cd ..
 rm -r remote_files
+
+ACTION_TYPES=[$ACTION_TYPES]
+echo ACTION_TYPES $ACTION_TYPES
