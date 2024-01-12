@@ -1,7 +1,5 @@
 #!/bin/bash
 
-# hello
-
 echo upload to S3 script started
 remote_dir=remote
 GIT_REPO=${PWD##*/}
