@@ -14,7 +14,7 @@ files_compare () {
 
 remote_dir=remote
 GIT_REPO=${PWD##*/}
-ACTION_TYPES=function_update
+ACTION_TYPES='"function_update"'
 
 echo checking for changes to classify deploy actions ...
 echo GIT_REPO $GIT_REPO
@@ -24,12 +24,19 @@ echo CFN_TEMPLATE_PATH $CFN_TEMPLATE_PATH
 mkdir remote_files
 
 echo checking for changes in layers.json ...
-files_compare layers_update $LAYERS_PATH layers.json
+files_compare '"layers_update"' $LAYERS_PATH layers.json
 
 echo checking for changes in cfn_template.yaml ...
-files_compare stack_update $CFN_TEMPLATE_PATH cfn_template.yaml
+files_compare '"stack_update"' $CFN_TEMPLATE_PATH cfn_template.yaml
 
-rm -r remote_files
-
-ACTION_TYPES=[$ACTION_TYPES]
-echo ACTION_TYPES $ACTION_TYPES
+if [ $? == 0 ]; then
+  rm -r remote_files
+  ACTION_TYPES=[$ACTION_TYPES]
+  echo ACTION_TYPES $ACTION_TYPES
+  invoke_payload='{"ACTION_TYPES":'$ACTION_TYPES',"FUNCTION_NAME":"'$LAMBDA_FUNCTION'"}'
+  echo invoking deployment lambda $DEPLOY_LAMBDA with payload $invoke_payload ...
+  aws lambda invoke \
+    --function-name $DEPLOY_LAMBDA \
+    --payload $invoke_payload \
+    --cli-binary-format raw-in-base64-out \
+    /dev/stdout
