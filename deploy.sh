@@ -40,3 +40,4 @@ if [ $? == 0 ]; then
     --payload $invoke_payload \
     --cli-binary-format raw-in-base64-out \
     /dev/stdout
+fi
