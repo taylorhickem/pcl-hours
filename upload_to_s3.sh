@@ -3,8 +3,8 @@
 files_compare () {
   endpoint=s3://$S3_BUCKET/git/$GIT_REPO/$2
   aws s3 cp $endpoint $remote_dir/$3
-  if [ $? == 0 ] then
-    if [ "$(cat $2)" != "$(cat $remote_dir/$3)" ] then
+  if [ $? == 0 ]; then
+    if [ "$(cat $2)" != "$(cat $remote_dir/$3)" ]; then
       ACTION_TYPES=$ACTION_TYPES,$1
     fi
   else
