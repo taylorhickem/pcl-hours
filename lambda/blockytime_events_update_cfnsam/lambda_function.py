@@ -8,7 +8,6 @@ import boto3
 import events as bt
 
 #hello world
-#is anybody in there
 
 S3_BUCKET = ''
 EVENT_DATA_KEY = 'events/events.csv'
